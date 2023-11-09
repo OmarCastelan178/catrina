@@ -4,18 +4,41 @@
  */
 package mx.itson.catrina.ui;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.table.DefaultTableModel;
+import mx.itson.catrina.entities.StatementAccount;
+import mx.itson.catrina.entities.Transacctions;
+
 /**
  *
  * @author aleja
  */
 public class CatrinaUI extends javax.swing.JFrame {
-
+           /*Bariabales numericas para hacer operaciones con statement.getAmount()
+           */     
+               double subtotal=0;
+                double subtotal2=0;
+                double totalDeposite=0;
+                double  totalWithdrawal=0;
+                double totalMovement=0;
     /**
      * Creates new form CatrinaUI
      */
     public CatrinaUI() {
         initComponents();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,7 +51,17 @@ public class CatrinaUI extends javax.swing.JFrame {
 
         btnLoading = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        txtAcc = new javax.swing.JTextArea();
+        lblAcc = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtDatos = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblMovement = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtTotals = new javax.swing.JTextArea();
+        cmbMonth = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -39,48 +72,206 @@ public class CatrinaUI extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        txtAcc.setEditable(false);
+        txtAcc.setColumns(20);
+        txtAcc.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtAcc.setRows(5);
+        jScrollPane1.setViewportView(txtAcc);
+
+        lblAcc.setBackground(new java.awt.Color(255, 255, 51));
+        lblAcc.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblAcc.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAcc.setText("Account Statement");
+        lblAcc.setOpaque(true);
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 51));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Mesos Bank");
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLabel1.setOpaque(true);
+
+        lblName.setBackground(new java.awt.Color(255, 255, 51));
+        lblName.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lblName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblName.setOpaque(true);
+
+        txtDatos.setEditable(false);
+        txtDatos.setColumns(20);
+        txtDatos.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtDatos.setRows(5);
+        jScrollPane2.setViewportView(txtDatos);
+
+        tblMovement.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Date", "Description", "Deposit", "WithDrawals", "SubTotal"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane3.setViewportView(tblMovement);
+
+        txtTotals.setColumns(20);
+        txtTotals.setRows(5);
+        jScrollPane4.setViewportView(txtTotals);
+
+        cmbMonth.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un mes...", "January", "Frebruary", "March", "April", "May", "Jun", "July", "August", "September", "Octuber", "November", "December" }));
+        cmbMonth.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbMonthItemStateChanged(evt);
+            }
+        });
+        cmbMonth.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbMonthActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(114, 114, 114)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                        .addComponent(lblName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)
+                        .addComponent(lblAcc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
                 .addComponent(btnLoading)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(101, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cmbMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(108, 108, 108))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnLoading)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnLoading)
+                    .addComponent(cmbMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
+                .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(lblAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoadingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadingActionPerformed
-        // TODO add your handling code here:
+       /*DecimalFormat format y DateFormat dateFormat
+        Son los formatos en los que van a aparecer los datos del JSon
+        DecimalFormat para los datos numericos y DateFormat para los tipo date.
+        */
+        DecimalFormat format = new DecimalFormat("$##,##0.00");
+       DateFormat dateFormat= new SimpleDateFormat("dd/MM/yy");
+        try{
+          /*JFileChooser es una clase de java que nos permite escojer un archivo
+            en espesifico y es invicada por la variable filechooser
+            */ 
+            JFileChooser filechooser = new JFileChooser();
+       filechooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+       if(filechooser.showOpenDialog(this)== JFileChooser.APPROVE_OPTION){
+           File file = filechooser.getSelectedFile();
+           byte fileByte[]= Files.readAllBytes(file.toPath());
+           String content= new String(fileByte, StandardCharsets.UTF_8);
+           StatementAccount statement = new StatementAccount().deserealize(content);
+           List<Transacctions> listTransactions= statement.getTransactions();
+           /*Metodo de ordenamiento donde se comparan las fechas entre si para 
+           ordenarlas de la mas antigua a la mas reciente respectivamente.
+           */
+           Collections.sort(listTransactions, new Comparator<Transacctions>() {
+           public int compare (Transacctions t1, Transacctions t2){
+               return t1.getDate().compareTo(t2.getDate());
+           }
+           });
+           /*Condiciennante que mientras el statemetn sea diferente a null
+           este pasara a reflejar los datos del GSon en el JFrame, siendo asi
+           que la coneccion con el GSon fue correcta y el statement esta cargado
+           con los datos del mismo.
+           */
+           if(statement != null){
+               txtDatos.setText("City: "+statement.getCostumer().getCity()+
+                       "\nAddress: "+statement.getCostumer().getAddress()+
+                       "\nID: "+statement.getCostumer().getId()+
+                       "\nRFC: "+statement.getCostumer().getRfc()+
+                       "\nZip_code: "+statement.getCostumer().getZipCode());
+               lblName.setText(statement.getCostumer().getName());
+               txtAcc.setText("Account: "+statement.getAccount()+
+                       "\nClabe: "+statement.getClabe()+
+                       "\nCurrency: "+statement.getCurrency());
+                DefaultTableModel model = (DefaultTableModel) tblMovement.getModel();
+                model.setRowCount(0);
+                /*Ciclo for each donde se agregan los datos del GSon a la tabla
+                  dependiendo de los datos que este tenga.
+                 */
+                for(Transacctions trans : statement.getTransactions()){ 
+                    /*Condicionante para diferenciar entre deposito y retiro
+                    y dependiendo de cual sea se reflejara en su esásio corres-
+                    pondiente.
+                    */
+                    if(trans.getType()==trans.getType().DEPOSIT){
+                          model.addRow(new Object[]{
+                        dateFormat.format(trans.getDate()), trans.getDescription()
+                        , format.format(trans.getAmount()),"",format.format(subtotal+=trans.getAmount())
+                    });
+                    totalDeposite+=trans.getAmount();
+                   }else{
+                         model.addRow(new Object[]{
+                        dateFormat.format(trans.getDate()), trans.getDescription()
+                        , "",format.format(trans.getAmount()),format.format(subtotal-=trans.getAmount())
+                    }); 
+                   totalWithdrawal+=trans.getAmount();
+                    }
+                 subtotal2=subtotal;
+                 
+                }
+                totalMovement= totalDeposite+totalWithdrawal;
+                
+               txtTotals.setText("Deposite: "+format.format(totalDeposite)+
+                       "\nWithdrawal: "+format.format(totalWithdrawal)+
+                       "\nMovemetn: "+format.format(totalMovement));
+           }
+       }
+       }catch(IOException ex){
+        System.err.print("Error: "+ex.getMessage());
+    }
     }//GEN-LAST:event_btnLoadingActionPerformed
+
+    private void cmbMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMonthActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbMonthActionPerformed
+
+    private void cmbMonthItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbMonthItemStateChanged
+        
+    }//GEN-LAST:event_cmbMonthItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -119,7 +310,17 @@ public class CatrinaUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLoading;
+    private javax.swing.JComboBox<String> cmbMonth;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lblAcc;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JTable tblMovement;
+    private javax.swing.JTextArea txtAcc;
+    private javax.swing.JTextArea txtDatos;
+    private javax.swing.JTextArea txtTotals;
     // End of variables declaration//GEN-END:variables
 }

@@ -25,7 +25,8 @@ import mx.itson.catrina.entities.Transacctions;
  * @author aleja
  */
 public class CatrinaUI extends javax.swing.JFrame {
-           /*Variabales numericas para hacer operaciones con statement.getAmount()
+          /**
+           *  Variabales numericas para hacer operaciones con statement.getAmount()
            */     
                double subtotal=0;
                 double total=0;
@@ -187,14 +188,14 @@ public class CatrinaUI extends javax.swing.JFrame {
 
     private void btnLoadingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadingActionPerformed
        /*DecimalFormat format y DateFormat dateFormat
-        Son los formatos en los que van a aparecer los datos del JSon
+        Son los formatos en los que van aparecer los datos del GSon
         DecimalFormat para los datos numericos y DateFormat para los tipo date.
         */
         DecimalFormat format = new DecimalFormat("$##,##0.00");
        DateFormat dateFormat= new SimpleDateFormat("dd/MM/yy");
         try{
-          /*JFileChooser es una clase de java que nos permite escojer un archivo
-            en espesifico y es invicada por la variable filechooser
+          /*JFileChooser es una clase de java que nos permite escoger un archivo
+            en especifico y es invocada por la variable filechooser
             */ 
             JFileChooser filechooser = new JFileChooser();
        filechooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -204,19 +205,23 @@ public class CatrinaUI extends javax.swing.JFrame {
            String content= new String(fileByte, StandardCharsets.UTF_8);
            StatementAccount statement = new StatementAccount().deserealize(content);
            List<Transacctions> listTransactions= statement.getTransactions();
-           /*Metodo de ordenamiento donde se comparan las fechas entre si para 
-           ordenarlas de la mas antigua a la mas reciente respectivamente.
-           */
+           /**
+            * Método de ordenamiento donde se comparan las fechas entre si para 
+            * ordenarlas de la más antigua a la más reciente respectivamente.
+            */
+           
            Collections.sort(listTransactions, new Comparator<Transacctions>() {
            public int compare (Transacctions t1, Transacctions t2){
                return t1.getDate().compareTo(t2.getDate());
            }
            });
-           /*Condiciennante que mientras el statemetn sea diferente a null
+           /**
+            * Condicionante que mientras el statemetn sea diferente a null
            este pasara a reflejar los datos del GSon en el JFrame, siendo asi
-           que la coneccion con el GSon fue correcta y el statement esta cargado
+           que la conección con el GSon fue correcta y el statement esta cargado
            con los datos del mismo.
-           */
+            */
+           
            if(statement != null){
                txtDatos.setText("City: "+statement.getCostumer().getCity()+
                        "\nAddress: "+statement.getCostumer().getAddress()+
@@ -229,14 +234,18 @@ public class CatrinaUI extends javax.swing.JFrame {
                        "\nCurrency: "+statement.getCurrency());
                 DefaultTableModel model = (DefaultTableModel) tblMovement.getModel();
                 model.setRowCount(0);
-                /*Ciclo for each donde se agregan los datos del GSon a la tabla
+                /**
+                 * Ciclo for each donde se agregan los datos del GSon a la tabla
                   dependiendo de los datos que este tenga.
                  */
+                 
                 for(Transacctions trans : statement.getTransactions()){ 
-                    /*Condicionante para diferenciar entre deposito y retiro
+                    /**
+                     * Condicionante para diferenciar entre deposito y retiro
                     y dependiendo de cual sea se reflejara en su esásio corres-
                     pondiente.
-                    */
+                     */
+                    
                     if(trans.getType()==trans.getType().DEPOSIT){
                           model.addRow(new Object[]{
                         dateFormat.format(trans.getDate()), trans.getDescription()

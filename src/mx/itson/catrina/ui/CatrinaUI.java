@@ -25,10 +25,10 @@ import mx.itson.catrina.entities.Transacctions;
  * @author aleja
  */
 public class CatrinaUI extends javax.swing.JFrame {
-           /*Bariabales numericas para hacer operaciones con statement.getAmount()
+           /*Variabales numericas para hacer operaciones con statement.getAmount()
            */     
                double subtotal=0;
-                double subtotal2=0;
+                double total=0;
                 double totalDeposite=0;
                 double  totalWithdrawal=0;
                 double totalMovement=0;
@@ -250,7 +250,7 @@ public class CatrinaUI extends javax.swing.JFrame {
                     }); 
                    totalWithdrawal+=trans.getAmount();
                     }
-                 subtotal2=subtotal;
+                 total=subtotal;
                  
                 }
                 totalMovement= totalDeposite+totalWithdrawal;

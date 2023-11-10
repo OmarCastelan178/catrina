@@ -4,7 +4,10 @@
  */
 package mx.itson.catrina.entities;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import mx.itson.catrina.enums.Type;
 
 /**
  *
@@ -12,8 +15,9 @@ import java.util.Date;
  */
 public class Transacctions {
     private Date date = new Date();
-    private String descripcion = new String();
+    private String description = new String();
     private double amount;
+    private Type type;
 
     public Date getDate() {
         return date;
@@ -23,13 +27,7 @@ public class Transacctions {
         this.date = date;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+    
 
     public double getAmount() {
         return amount;
@@ -38,6 +36,23 @@ public class Transacctions {
     public void setAmount(double amount) {
         this.amount = amount;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+    
 
  
 }

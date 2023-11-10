@@ -18,7 +18,7 @@ public class StatementAccount {
     private String clabe= new String();
     private String currency= new String();
     private Costumer customer= new Costumer();
-    private List<Transacctions> transacctions = new ArrayList();
+    private List<Transacctions> transactions = new ArrayList();
     
     public StatementAccount deserealize(String json){
         StatementAccount statementAccount= new StatementAccount();
@@ -62,12 +62,22 @@ public class StatementAccount {
         this.customer = customer;
     }
 
-    public List<Transacctions> getTransacctions() {
-        return transacctions;
+    public List<Transacctions> getTransactions() {
+        return transactions;
     }
 
-    public void setTransacctions(List<Transacctions> transacctions) {
-        this.transacctions = transacctions;
+    public void setTransactions(List<Transacctions> transactions) {
+        this.transactions = transactions;
     }
+
+    public Costumer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Costumer customer) {
+        this.customer = customer;
+    }
+
+   
     
 }

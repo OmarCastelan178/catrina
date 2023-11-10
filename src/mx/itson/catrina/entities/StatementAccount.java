@@ -8,12 +8,20 @@ package mx.itson.catrina.entities;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
- *
+ * La calse StatementAccount  representa una cuenta bancaria y conmtiene informa-
+ * cion relacinada
+ * Se utiliza para inicializar variables y por la cual conseguimos los datos
+ * del GSon
  * @author aleja
  */
 public class StatementAccount {
+    /**
+     * Variables:
+     * Strings: account, clabe, currency,
+     * Contiene dentro de las mismas a la clase Costumer atravez de la variable
+     * customer y una lista de la clase Transacctions.
+     */
     private String account= new String();
     private String clabe= new String();
     private String currency= new String();

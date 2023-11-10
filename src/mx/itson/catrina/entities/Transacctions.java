@@ -10,7 +10,7 @@ import java.util.Date;
 import mx.itson.catrina.enums.Type;
 
 /**
- *
+ *Clase donde se guardan los datos de las transacciones echas en el GSonmou
  * @author aleja
  */
 public class Transacctions {

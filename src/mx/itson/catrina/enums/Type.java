@@ -5,7 +5,8 @@
 package mx.itson.catrina.enums;
 import com.google.gson.annotations.SerializedName;
 /**
- *
+ *Clase tipo enumerador que se utiliza para saber que tipo de transaccion se 
+ * utilizo, estando serealizadas como 1 para los depositos y 2 para los retiros.
  * @author aleja
  */
 public enum Type {

@@ -7,7 +7,10 @@ package mx.itson.catrina.entities;
 import com.google.gson.annotations.SerializedName;
 
 /**
- *
+ * Esta clase es donde se guardan los datos del Costumer en diferentes variables
+ * tipo String
+ * Ademas se agrego un SerializedName(zip_code), para que este coincida con el
+ * nombre de respectivo dato en el GSon
  * @author aleja
  */
 public class Costumer {
